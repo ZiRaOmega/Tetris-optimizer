@@ -10,7 +10,7 @@ func DisplayHead() {
 	for i := 7; i < len(os.Args[1])-4; i++ {
 		txt += string(os.Args[1][i])
 	}
-	fmt.Println("###", txt, "###\n\nLoading ...")
+	fmt.Println("\033[0m", "###", txt, "###\n\nLoading ...")
 }
 
 func Color(x int, y int, field [][]byte) string {

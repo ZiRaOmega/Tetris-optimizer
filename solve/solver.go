@@ -10,10 +10,12 @@ func Solve(tetroIndex int, tetrominos [][][]byte, size int, field [][]byte) {
 		for x := 0; x < size; x++ {
 			if CanPut(x, y, tetroIndex, tetrominos, field) {
 				Showdetails(field)
-
 				if y == len(field)-1 || tetroIndex == len(tetrominos)-1 {
+					fmt.Println("\033[0m" + "=====================")
 					PrintSolution(field)
+					fmt.Println("\033[0m" + "=====================")
 					os.Exit(0)
+
 				} else {
 					Solve(tetroIndex+1, tetrominos, size, field) // continue solving ...
 				}
@@ -87,8 +89,6 @@ func BackTrack(x int, y int, tetroIndex int, tetrominos [][][]byte, field [][]by
 }
 
 func PrintSolution(field [][]byte) {
-	fmt.Println("\033[0m" + "=====================")
-
 	for y := 0; y < len(field); y++ {
 		for x := 0; x < len(field[y]); x++ {
 			if field[y][x] == '?' {
@@ -99,7 +99,4 @@ func PrintSolution(field [][]byte) {
 		}
 		fmt.Println()
 	}
-	fmt.Println("\033[0m" + "=====================")
 }
-
-/////////////////////OPTIONS

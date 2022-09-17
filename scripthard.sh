@@ -1,1 +1,1 @@
-go run . testTetrisHard.txt
+go run . Audits/testTetrisHard.txt

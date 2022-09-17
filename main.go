@@ -15,26 +15,25 @@ func main() {
 		fmt.Println("ERROR : Missing file")
 		return
 	}
+	solve.DisplayHead()
 
-	file_content := ReadFile(os.Args[1]) + "\n\n"
+	// creating tetrominos tab
+	file_content := ReadFile(os.Args[1])
 	tetrominos := FindTetrominos(file_content)
-	tetrominos = SimplifyTetrominos(tetrominos)
 
-	validTetrominos := ReadFile("ValidTetrosList.txt")
-	validTetrominosTab := strings.Split(validTetrominos, "\n\n")
-	// validTetrominosByte := CreateByteTab(validTetrominosTab)
-	for _, elem := range validTetrominosTab {
-		fmt.Println(elem)
-		fmt.Println()
-	}
-	// solve.ManageErrors(tetrominos, validTetrominos)
+	solve.CheckFileFormat(tetrominos)
 
+	tetrominos = RemoveDotsLines(tetrominos)
 	tetrominosByte := CreateByteTab(tetrominos)
-	tetrominosByte = FindAndRemoveExtraDots(tetrominosByte)
+	tetrominosByte = RemoveDotsColumns(tetrominosByte)
+
+	// Error management (bad tetrominos or bad file format)
+	validTetros := solve.AllTetrominos()
+	solve.CheckTetrominos(tetrominosByte, validTetros)
+	// set field
 	min_size := FindMinSize(tetrominos)
 	field := solve.CreateField(min_size)
 
-	solve.DisplayHead()
 	solve.Solve(0, tetrominosByte, min_size, field)
 }
 
@@ -47,28 +46,19 @@ func ReadFile(filename string) string {
 }
 
 func FindTetrominos(file_content string) []string {
-	var tetrominos []string
-	piece := ""
-	line_counter := 1
-	for _, cara := range file_content {
-		if line_counter != 5 {
-			piece += string(cara)
-		} else {
-			tetrominos = append(tetrominos, piece)
-			piece = ""
-		}
+	tab := strings.Split(file_content, "\n\n")
 
-		if line_counter == 5 {
-			line_counter = 0
-		}
-		if cara == '\n' {
-			line_counter++
+	tetrominos := []string{}
+	for i, elem := range tab {
+		if i != len(tetrominos)-1 {
+			elem += "\n"
+			tetrominos = append(tetrominos, elem)
 		}
 	}
 	return tetrominos
 }
 
-func SimplifyTetrominos(tab []string) []string {
+func RemoveDotsLines(tab []string) []string {
 	new_tab := []string{}
 	// CHECK LINES
 	for _, tetromino := range tab {
@@ -115,9 +105,10 @@ func CreateByteTab(tetrominos []string) [][][]byte {
 	return tab
 }
 
-func FindAndRemoveExtraDots(tetrominos [][][]byte) [][][]byte {
+func RemoveDotsColumns(tetrominos [][][]byte) [][][]byte {
 	newTab := [][][]byte{}
 	for i := range tetrominos {
+		solve.CheckEmptyTetrosError(tetrominos[i])
 		founded := false
 		counter := 0
 		indexsToRemove := []int{}
