@@ -10,6 +10,7 @@ func DisplayHead() {
 	for i := 7; i < len(os.Args[1])-4; i++ {
 		txt += string(os.Args[1][i])
 	}
+	fmt.Println("\033[37m" + "=============================")
 	fmt.Println("\033[0m", "###", txt, "###\n\nLoading ...")
 }
 

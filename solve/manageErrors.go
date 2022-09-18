@@ -46,30 +46,25 @@ func CheckFileFormat(tetrominos []string) {
 		}
 		if counter != 4 {
 			fmt.Println("\033[31m" + "ERROR : file is badly formatted")
-			fmt.Println("\033[37m" + "=====")
 
 			fmt.Print("\033[31m", tetro)
-			fmt.Println("\033[37m" + "=====")
 			os.Exit(0)
 		}
 	}
 }
 
 func PrintError(tetro [][]byte) {
-	fmt.Println("\033[37m" + "====")
 	for _, line := range tetro {
 		for _, cara := range line {
 			fmt.Print("\033[31m", string(cara))
 		}
 		fmt.Println()
 	}
-	fmt.Println("\033[37m" + "====================")
 }
 
 func CheckEmptyTetrosError(tetro [][]byte) {
 	if tetro == nil {
-		fmt.Println("\033[31m", "ERROR : Empty Tetromino")
-		fmt.Println("\033[37m" + "====================")
+		fmt.Println("\033[31m" + "ERROR : Empty Tetromino")
 		os.Exit(0)
 	}
 }

@@ -11,9 +11,7 @@ func Solve(tetroIndex int, tetrominos [][][]byte, size int, field [][]byte) {
 			if CanPut(x, y, tetroIndex, tetrominos, field) {
 				Showdetails(field)
 				if y == len(field)-1 || tetroIndex == len(tetrominos)-1 {
-					fmt.Println("\033[0m" + "=====================")
 					PrintSolution(field)
-					fmt.Println("\033[0m" + "=====================")
 					os.Exit(0)
 
 				} else {
