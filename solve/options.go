@@ -3,6 +3,7 @@ package solve
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 func DisplayHead() {
@@ -54,9 +55,9 @@ func Color(x int, y int, field [][]byte) string {
 }
 
 // show solving details
-func Showdetails(field [][]byte) {
+func Showdetails(field [][]byte, start time.Time) {
 	if len(os.Args) > 2 && os.Args[2] == "--details" {
-		PrintSolution(field)
+		PrintSolution(field, start)
 		fmt.Println()
 	}
 }

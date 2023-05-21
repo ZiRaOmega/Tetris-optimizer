@@ -3,19 +3,20 @@ package solve
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
-func Solve(tetroIndex int, tetrominos [][][]byte, size int, field [][]byte) {
+func Solve(tetroIndex int, tetrominos [][][]byte, size int, field [][]byte, start time.Time) {
 	for y := 0; y < size; y++ {
 		for x := 0; x < size; x++ {
 			if CanPut(x, y, tetroIndex, tetrominos, field) {
-				Showdetails(field)
+				Showdetails(field, start)
 				if y == len(field)-1 || tetroIndex == len(tetrominos)-1 {
-					PrintSolution(field)
+					PrintSolution(field, start)
 					os.Exit(0)
 
 				} else {
-					Solve(tetroIndex+1, tetrominos, size, field) // continue solving ...
+					Solve(tetroIndex+1, tetrominos, size, field, start) // continue solving ...
 				}
 				BackTrack(x, y, tetroIndex, tetrominos, field)
 			}
@@ -24,13 +25,13 @@ func Solve(tetroIndex int, tetrominos [][][]byte, size int, field [][]byte) {
 
 	if tetroIndex == 0 {
 		field := CreateField(size + 1)
-		Solve(tetroIndex, tetrominos, size+1, field)
+		Solve(tetroIndex, tetrominos, size+1, field, start)
 	}
 }
 
 // checks if we can put the tetro in the field
 func CanPut(x int, y int, tetroIndex int, tetrominos [][][]byte, field [][]byte) bool {
-	// does the tetro fit in the field ?
+	// does the tetro fit in the field ? (otherwise out of range error can appear)
 	if len(tetrominos[tetroIndex])+y > len(field) {
 		return false
 	}
@@ -86,7 +87,7 @@ func BackTrack(x int, y int, tetroIndex int, tetrominos [][][]byte, field [][]by
 	}
 }
 
-func PrintSolution(field [][]byte) {
+func PrintSolution(field [][]byte, start time.Time) {
 	for y := 0; y < len(field); y++ {
 		for x := 0; x < len(field[y]); x++ {
 			if field[y][x] == '?' {
@@ -97,4 +98,7 @@ func PrintSolution(field [][]byte) {
 		}
 		fmt.Println()
 	}
+	end := time.Now()
+	fmt.Print("\033[30m", "solved in")
+	fmt.Println("\033[30m", end.Sub(start))
 }

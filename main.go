@@ -6,11 +6,14 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"TetrisOptimizer/solve"
 )
 
 func main() {
+	start := time.Now()
+
 	if len(os.Args) == 1 {
 		fmt.Println("ERROR : Missing file")
 		return
@@ -34,7 +37,7 @@ func main() {
 	min_size := FindMinSize(tetrominos)
 	field := solve.CreateField(min_size)
 
-	solve.Solve(0, tetrominosByte, min_size, field)
+	solve.Solve(0, tetrominosByte, min_size, field, start)
 }
 
 func ReadFile(filename string) string {
